@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     public float atkDamage;
     float pulsDamage;
     float pulsMaxExp;
-    public const float SPEED = 2;
+    public const float SPEED = 1.5f;
     public float maxExp;
     public float exp;
     public int level;
@@ -112,8 +112,6 @@ public class Player : MonoBehaviour
                 shootObjects[i].DamageSetting();
             }
             damageText.text = "Damage : " + atkDamage;
-            expBar.fillAmount = exp / maxExp;
-            expBarText.text = exp + "/" + maxExp;
         }
     }
     public void TakeDamage(float damage)

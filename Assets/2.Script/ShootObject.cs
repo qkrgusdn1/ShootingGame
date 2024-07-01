@@ -13,6 +13,8 @@ public class ShootObject : MonoBehaviour
     public float shootTimer;
     protected Animator animator;
 
+    public bool enemy;
+
     [Header("Shoot Points")]
     public List<GameObject> shootPoints = new List<GameObject>();
     protected int shootPointIndex;
@@ -41,9 +43,15 @@ public class ShootObject : MonoBehaviour
 
     public virtual void Shoot()
     {
-        if (shootTimer > 0)
-            return;
-        animator.Play("Shoot");
+        
+
+        if (!enemy)
+        {
+            if (shootTimer > 0)
+                return;
+            animator.Play("Shoot");
+        }
+
         shootTimer = shootMaxTimer;
         foreach (GameObject shootPoint in shootPoints)
         {

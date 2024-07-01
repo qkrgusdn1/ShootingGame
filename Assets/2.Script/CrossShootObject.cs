@@ -25,8 +25,6 @@ public class CrossShootObject : ShootObject
             bullet.damage = bulletDamage;
             bullets.Add(bullet);
             
-
-
             shootPointIndex = (shootPointIndex + 1) % shootPoints.Count;
         }
     }

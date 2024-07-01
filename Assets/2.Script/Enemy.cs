@@ -13,7 +13,9 @@ public class Enemy : MonoBehaviour
     Camera mainCamera;
     public float shootTime;
     public float shootCount;
+    public float shootLoad;
     [SerializeField] bool canShoot;
+    ShootObject shootObject;
 
     [Header("Hit Effects")]
     public HitEffect hitEffectPrefab;
@@ -30,6 +32,8 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
+        shootObject = GetComponent<ShootObject>();
+        StartCoroutine(CoShoot());
     }
 
 
@@ -37,10 +41,19 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         Vector3 viewPoint = mainCamera.WorldToViewportPoint(transform.position);
-        if(viewPoint.x > 0 && viewPoint.x < 0 && viewPoint.y > 0 && viewPoint.y < 1)
+        shootObject.UpdateShoot();
+        if (hp <= 0)
+        {
+            Player.Instance.exp += expAmount;
+            Player.Instance.expBar.fillAmount = Player.Instance.exp / Player.Instance.maxExp;
+            Player.Instance.expBarText.text = Player.Instance.exp + "/" + Player.Instance.maxExp;
+            GameMgr.Instance.AddScore(scoreAmount);
+            Destroy(gameObject);
+        }
+        if (viewPoint.x > 0 && viewPoint.x < 1 && viewPoint.y > 0 && viewPoint.y < 1)
         {
             canShoot = true;
-            StartCoroutine(CoShoot());
+            
         }
         else
         {
@@ -59,50 +72,49 @@ public class Enemy : MonoBehaviour
 
     public IEnumerator CoShoot()
     {
-        while (canShoot)
+        while (true)
         {
-            yield return new WaitForSeconds(shootTime);
-            ShootObject shootObject = GetComponent<ShootObject>();
-            for(int i = 0; i < shootCount; i++)
+            if (canShoot)
             {
-                shootObject.Shoot();
+                for (int i = 0; i < shootCount; i++)
+                {
+                    shootObject.Shoot();
+                    yield return new WaitForSeconds(shootTime);
+                }
             }
+            yield return new WaitForSeconds(shootLoad);
         }
     }
 
     public void TakeDamage(float damage)
     {
-        if (hitEffects.Count == 0)
+        if (canShoot)
         {
-            HitEffect spawnHitEffect = Instantiate(hitEffectPrefab, root.transform.position, root.transform.rotation);
-            hitEffects.Add(spawnHitEffect);
-        }
-        else
-        {
-            HitEffect disableHitEffect = hitEffects.Find(b => !b.gameObject.activeSelf);
-
-            if (disableHitEffect != null)
+            if (hitEffects.Count == 0)
             {
-                disableHitEffect.gameObject.SetActive(true);
-
-                disableHitEffect.transform.position = root.transform.position;
-                disableHitEffect.transform.rotation = root.transform.rotation;
+                HitEffect spawnHitEffect = Instantiate(hitEffectPrefab, root.transform.position, root.transform.rotation);
+                hitEffects.Add(spawnHitEffect);
             }
             else
             {
-                HitEffect spawnHitEffect = Instantiate(hitEffectPrefab, root.transform.position, root.transform.rotation, GameMgr.Instance.saveEffectObj.transform);
-                hitEffects.Add(spawnHitEffect);
+                HitEffect disableHitEffect = hitEffects.Find(b => !b.gameObject.activeSelf);
+
+                if (disableHitEffect != null)
+                {
+                    disableHitEffect.gameObject.SetActive(true);
+
+                    disableHitEffect.transform.position = root.transform.position;
+                    disableHitEffect.transform.rotation = root.transform.rotation;
+                }
+                else
+                {
+                    HitEffect spawnHitEffect = Instantiate(hitEffectPrefab, root.transform.position, root.transform.rotation, GameMgr.Instance.saveEffectObj.transform);
+                    hitEffects.Add(spawnHitEffect);
+                }
             }
+            hp -= damage;
         }
-        hp -= damage;
-        if (hp <= 0)
-        {
-            Player.Instance.exp += expAmount;
-            Player.Instance.expBar.fillAmount = Player.Instance.exp / Player.Instance.maxExp;
-            Player.Instance.expBarText.text = Player.Instance.exp + "/" + Player.Instance.maxExp;
-            GameMgr.Instance.AddScore(scoreAmount);
-            Destroy(gameObject);
-            
-        }
+        
+
     }
 }
