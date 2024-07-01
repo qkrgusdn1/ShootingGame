@@ -7,15 +7,21 @@ public class ShootObject : MonoBehaviour
     [Header("Bullet Settings")]
     public Bullet bulletPrefab;
     public float bulletDamage;
+    public ShootObjectType type;
     protected List<Bullet> bullets = new List<Bullet>();
+    public float shootMaxTimer;
+    public float shootTimer;
+    protected Animator animator;
 
     [Header("Shoot Points")]
     public List<GameObject> shootPoints = new List<GameObject>();
     protected int shootPointIndex;
-    
-    
-    
 
+    public void Start()
+    {
+        animator = GetComponent<Animator>();
+        shootTimer = shootMaxTimer;
+    }
 
     public virtual void DamageSetting()
     {
@@ -23,8 +29,22 @@ public class ShootObject : MonoBehaviour
         if (player != null)
             bulletDamage = player.atkDamage;
     }
+    public virtual void Equiped()
+    {
+
+    }
+
+    public virtual void UpdateShoot()
+    {
+        shootTimer -= Time.deltaTime;
+    }
+
     public virtual void Shoot()
     {
+        if (shootTimer > 0)
+            return;
+        animator.Play("Shoot");
+        shootTimer = shootMaxTimer;
         foreach (GameObject shootPoint in shootPoints)
         {
             Bullet disableBullet = bullets.Find(b => !b.gameObject.activeSelf);
@@ -44,4 +64,10 @@ public class ShootObject : MonoBehaviour
             }
         }
     }
+}
+
+public enum ShootObjectType
+{
+    Basic,
+    Cross
 }

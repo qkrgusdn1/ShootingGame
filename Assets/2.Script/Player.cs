@@ -13,11 +13,9 @@ public class Player : MonoBehaviour
         get { return instance; }
     }
     #endregion
-    void Awake()
-    {
-        instance = this;
-    }
+    
     ShootObject[] shootObjects;
+    ShootObject currentShootObject;
 
     [Header("Settings")]
     public float maxHp;
@@ -42,23 +40,33 @@ public class Player : MonoBehaviour
     public TMP_Text levelText;
     public TMP_Text damageText;
 
+
+    void Awake()
+    {
+        instance = this;
+    }
+
+    void Equip(ShootObjectType shootObjectType)
+    {
+        currentShootObject?.gameObject.SetActive(false);
+        for (int i = 0; i < shootObjects.Length; i++)
+        {
+            if(shootObjects[i].type == shootObjectType)
+            {
+                currentShootObject = shootObjects[i];
+                currentShootObject.DamageSetting();
+                damageText.text = "Damage : " + currentShootObject.bulletDamage;
+                currentShootObject.gameObject.SetActive(true);
+                currentShootObject.Equiped();
+            }
+        }
+    }
+
     void Start()
     {
         levelText.text = "Lv - " + level;
         shootObjects = GetComponentsInChildren<ShootObject>(true);
-
-        for (int i = 0; i < shootObjects.Length; i++)
-        {
-            shootObjects[i].DamageSetting();
-        }
-        for (int i = 0; i < shootObjects.Length; i++)
-        {
-            if (shootObjects[i].gameObject.activeSelf)
-            {
-                damageText.text = "Damage : " + shootObjects[i].bulletDamage;
-            }
-
-        }
+        Equip(ShootObjectType.Basic);
         
         hp = maxHp;
 
@@ -74,7 +82,12 @@ public class Player : MonoBehaviour
         Vector3 move = new Vector3(hor, 0, ver) * Time.deltaTime * SPEED;
         transform.Translate(move);
 
+        currentShootObject.UpdateShoot();
 
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Shoot();
+        }
         
         if(exp >= maxExp)
         {
@@ -131,5 +144,10 @@ public class Player : MonoBehaviour
         hp -= damage;
         hpBar.fillAmount = hp / maxHp;
         hpBarText.text = hp + "/" + maxHp;
+    }
+
+    public void Shoot()
+    {
+        currentShootObject.Shoot();
     }
 }

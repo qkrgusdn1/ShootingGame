@@ -396,7 +396,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &132677839
 Transform:
   m_ObjectHideFlags: 0
@@ -428,6 +428,9 @@ MonoBehaviour:
   bulletPrefab: {fileID: 8578137237698288836, guid: 54c469a4475b35e41b89b9d33d87dc3e,
     type: 3}
   bulletDamage: 1
+  type: 1
+  shootMaxTimer: 0
+  shootTimer: 0
   shootPoints:
   - {fileID: 1524526408}
   - {fileID: 1496177472}
@@ -2045,6 +2048,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   saveBulletObj: {fileID: 1572349615}
   saveEffectObj: {fileID: 420477322}
+  score: 0
 --- !u!4 &1152468981
 Transform:
   m_ObjectHideFlags: 0
@@ -2060,7 +2064,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1230985150
+--- !u!1001 &1211819282
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -2072,6 +2076,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PinkFish
+      objectReference: {fileID: 0}
+    - target: {fileID: 3100303151307121580, guid: b44af001352d1f745a0735f918c27883,
+        type: 3}
+      propertyPath: shootTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3100303151307121580, guid: b44af001352d1f745a0735f918c27883,
+        type: 3}
+      propertyPath: shootCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3100303151307121580, guid: b44af001352d1f745a0735f918c27883,
+        type: 3}
+      propertyPath: scoreAmount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4823554441656507665, guid: b44af001352d1f745a0735f918c27883,
+        type: 3}
+      propertyPath: shootMaxTimer
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6627963940079565312, guid: b44af001352d1f745a0735f918c27883,
         type: 3}
@@ -4418,6 +4442,9 @@ MonoBehaviour:
   bulletPrefab: {fileID: 8578137237698288836, guid: 54c469a4475b35e41b89b9d33d87dc3e,
     type: 3}
   bulletDamage: 1
+  type: 0
+  shootMaxTimer: 0
+  shootTimer: 0
   shootPoints:
   - {fileID: 1524526408}
   - {fileID: 1496177472}
@@ -4577,4 +4604,4 @@ SceneRoots:
   - {fileID: 1861340736}
   - {fileID: 1603125333}
   - {fileID: 1385232330}
-  - {fileID: 1230985150}
+  - {fileID: 1211819282}

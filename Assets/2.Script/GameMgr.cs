@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class GameMgr : MonoBehaviour
 {
@@ -19,4 +20,11 @@ public class GameMgr : MonoBehaviour
     public GameObject saveBulletObj;
     public GameObject saveEffectObj;
 
+    [Header("Setting")]
+    public int score;
+    
+    public void AddScore(int addScore)
+    {
+        score += addScore;
+    }
 }

@@ -9,7 +9,11 @@ public class Enemy : MonoBehaviour
     public float hp;
     public float moveSpeed;
     public float expAmount;
-    public EnemyMoveType enemyMoveType;
+    public int scoreAmount;
+    Camera mainCamera;
+    public float shootTime;
+    public float shootCount;
+    [SerializeField] bool canShoot;
 
     [Header("Hit Effects")]
     public HitEffect hitEffectPrefab;
@@ -23,20 +27,26 @@ public class Enemy : MonoBehaviour
         hp = maxHp;
     }
 
+    private void Start()
+    {
+        mainCamera = Camera.main;
+    }
+
+
+
     private void Update()
     {
-        if(hp <= 0)
+        Vector3 viewPoint = mainCamera.WorldToViewportPoint(transform.position);
+        if(viewPoint.x > 0 && viewPoint.x < 0 && viewPoint.y > 0 && viewPoint.y < 1)
         {
-            Player.Instance.exp += expAmount;
-            Player.Instance.expBar.fillAmount = Player.Instance.exp / Player.Instance.maxExp;
-            Player.Instance.expBarText.text = Player.Instance.exp + "/" + Player.Instance.maxExp;
-            Destroy(gameObject);
+            canShoot = true;
+            StartCoroutine(CoShoot());
         }
-
-        if(enemyMoveType == EnemyMoveType.verticality)
+        else
         {
-            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+            canShoot = false;
         }
+        transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -44,6 +54,19 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.CompareTag("DestoryWall"))
         {
             Destroy(gameObject);
+        }
+    }
+
+    public IEnumerator CoShoot()
+    {
+        while (canShoot)
+        {
+            yield return new WaitForSeconds(shootTime);
+            ShootObject shootObject = GetComponent<ShootObject>();
+            for(int i = 0; i < shootCount; i++)
+            {
+                shootObject.Shoot();
+            }
         }
     }
 
@@ -72,12 +95,14 @@ public class Enemy : MonoBehaviour
             }
         }
         hp -= damage;
+        if (hp <= 0)
+        {
+            Player.Instance.exp += expAmount;
+            Player.Instance.expBar.fillAmount = Player.Instance.exp / Player.Instance.maxExp;
+            Player.Instance.expBarText.text = Player.Instance.exp + "/" + Player.Instance.maxExp;
+            GameMgr.Instance.AddScore(scoreAmount);
+            Destroy(gameObject);
+            
+        }
     }
-}
-
-public enum EnemyMoveType
-{
-    verticality,
-    horizontal,
-    circle
 }
