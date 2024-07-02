@@ -43,8 +43,6 @@ public class ShootObject : MonoBehaviour
 
     public virtual void Shoot()
     {
-        
-
         if (!enemy)
         {
             if (shootTimer > 0)
@@ -77,5 +75,6 @@ public class ShootObject : MonoBehaviour
 public enum ShootObjectType
 {
     Basic,
+    DoubleBasic,
     Cross
 }

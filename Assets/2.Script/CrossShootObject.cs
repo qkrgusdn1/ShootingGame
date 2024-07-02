@@ -6,6 +6,13 @@ public class CrossShootObject : ShootObject
 {
     public override void Shoot()
     {
+        if (!enemy)
+        {
+            if (shootTimer > 0)
+                return;
+            animator.Play("Shoot");
+        }
+        shootTimer = shootMaxTimer;
         Bullet disableBullet = bullets.Find(b => !b.gameObject.activeSelf);
 
         if (disableBullet != null)

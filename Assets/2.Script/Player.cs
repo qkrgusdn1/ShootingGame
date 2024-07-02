@@ -39,6 +39,7 @@ public class Player : MonoBehaviour
     public TMP_Text expBarText;
     public TMP_Text levelText;
     public TMP_Text damageText;
+    public TMP_Text shootObjectTypeText;
 
 
     void Awake()
@@ -60,14 +61,16 @@ public class Player : MonoBehaviour
                 currentShootObject.Equiped();
             }
         }
+        shootObjectTypeText.text = "Type : " + shootObjectType.ToString();
     }
 
     void Start()
     {
         levelText.text = "Lv - " + level;
         shootObjects = GetComponentsInChildren<ShootObject>(true);
-        Equip(ShootObjectType.Basic);
+        Equip(ShootObjectType.Cross);
         
+
         hp = maxHp;
 
         expBar.fillAmount = exp / maxExp;
