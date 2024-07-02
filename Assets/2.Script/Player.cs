@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour
     public float maxExp;
     public float exp;
     public int level;
+    public float shootSpeed;
 
     [Header("Hit Effects")]
     public HitEffect hitEffectPrefab;
@@ -47,22 +49,7 @@ public class Player : MonoBehaviour
         instance = this;
     }
 
-    void Equip(ShootObjectType shootObjectType)
-    {
-        currentShootObject?.gameObject.SetActive(false);
-        for (int i = 0; i < shootObjects.Length; i++)
-        {
-            if(shootObjects[i].type == shootObjectType)
-            {
-                currentShootObject = shootObjects[i];
-                currentShootObject.DamageSetting();
-                damageText.text = "Damage : " + currentShootObject.bulletDamage;
-                currentShootObject.gameObject.SetActive(true);
-                currentShootObject.Equiped();
-            }
-        }
-        shootObjectTypeText.text = "Type : " + shootObjectType.ToString();
-    }
+ 
 
     void Start()
     {
@@ -75,6 +62,31 @@ public class Player : MonoBehaviour
 
         expBar.fillAmount = exp / maxExp;
         expBarText.text = exp + "/" + maxExp;
+    }
+
+    public void ChanageShootObject(string shootObjectName)
+    {
+        if (Enum.TryParse<ShootObjectType>(shootObjectName, out ShootObjectType objectType))
+        {
+            Equip(objectType);
+        }
+    }
+
+    public void Equip(ShootObjectType shootObjectType)
+    {
+        currentShootObject?.gameObject.SetActive(false);
+        for (int i = 0; i < shootObjects.Length; i++)
+        {
+            if (shootObjects[i].type == shootObjectType)
+            {
+                currentShootObject = shootObjects[i];
+                currentShootObject.DamageSetting();
+                damageText.text = "Damage : " + currentShootObject.bulletDamage;
+                currentShootObject.gameObject.SetActive(true);
+                currentShootObject.Equiped();
+            }
+        }
+        shootObjectTypeText.text = "Type : " + shootObjectType.ToString();
     }
 
     public void Update()

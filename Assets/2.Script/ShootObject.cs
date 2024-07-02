@@ -23,6 +23,7 @@ public class ShootObject : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         shootTimer = shootMaxTimer;
+        ShootSpeedSetting();
     }
 
     public virtual void DamageSetting()
@@ -31,6 +32,14 @@ public class ShootObject : MonoBehaviour
         if (player != null)
             bulletDamage = player.atkDamage;
     }
+
+    public virtual void ShootSpeedSetting()
+    {
+        Player player = GetComponentInParent<Player>();
+        if (player != null)
+            shootMaxTimer = player.shootSpeed;
+    }
+
     public virtual void Equiped()
     {
 
@@ -75,6 +84,6 @@ public class ShootObject : MonoBehaviour
 public enum ShootObjectType
 {
     Basic,
-    DoubleBasic,
+    QuadrupleBasic,
     Cross
 }
