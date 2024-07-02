@@ -47,15 +47,16 @@ public class Player : MonoBehaviour
     void Awake()
     {
         instance = this;
+        shootObjects = GetComponentsInChildren<ShootObject>(true);
+        Equip(ShootObjectType.Basic);
     }
 
- 
+    
 
     void Start()
     {
         levelText.text = "Lv - " + level;
-        shootObjects = GetComponentsInChildren<ShootObject>(true);
-        Equip(ShootObjectType.Cross);
+        
         
 
         hp = maxHp;
