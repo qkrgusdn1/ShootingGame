@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
@@ -21,10 +22,20 @@ public class GameMgr : MonoBehaviour
     public GameObject saveEffectObj;
 
     [Header("Setting")]
+    public int BestScore;
     public int score;
-    
+
+    [Header("UI")]
+    public TMP_Text scoreText;
+
+    private void Start()
+    {
+        scoreText.text = "Score : " + score;
+    }
+
     public void AddScore(int addScore)
     {
         score += addScore;
+        scoreText.text = "Score : " + score;
     }
 }

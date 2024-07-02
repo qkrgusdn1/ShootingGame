@@ -101,8 +101,9 @@ public class Player : MonoBehaviour
                 exp = 0;
             }
             maxExp += pulsMaxExp;
-            
-            
+            expBar.fillAmount = exp / maxExp;
+            expBarText.text = exp + "/" + maxExp;
+
             level++;
             levelText.text = "Lv - " + level;
             pulsDamage++;

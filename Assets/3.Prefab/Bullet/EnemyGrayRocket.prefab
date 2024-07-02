@@ -69,7 +69,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3.2
   damage: 1
-  disableTime: 2
+  disableTime: 5
   bulletType: 1
 --- !u!1 &8044867872987042718
 GameObject:
