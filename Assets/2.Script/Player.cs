@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -14,7 +13,7 @@ public class Player : MonoBehaviour
         get { return instance; }
     }
     #endregion
-    
+
     ShootObject[] shootObjects;
     ShootObject currentShootObject;
 
@@ -51,13 +50,13 @@ public class Player : MonoBehaviour
         Equip(ShootObjectType.Basic);
     }
 
-    
+
 
     void Start()
     {
         levelText.text = "Lv - " + level;
-        
-        
+
+
 
         hp = maxHp;
 
@@ -104,8 +103,8 @@ public class Player : MonoBehaviour
         {
             Shoot();
         }
-        
-        if(exp >= maxExp)
+
+        if (exp >= maxExp)
         {
             pulsMaxExp += 10 * level;
             if (maxExp < exp)
@@ -124,17 +123,32 @@ public class Player : MonoBehaviour
             levelText.text = "Lv - " + level;
             pulsDamage++;
             atkDamage += pulsDamage;
-            for(int i = 0; i< shootObjects.Length; i++)
+            for (int i = 0; i < shootObjects.Length; i++)
             {
                 shootObjects[i].DamageSetting();
             }
             damageText.text = "Damage : " + atkDamage;
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            ChanageShootObject("Basic");
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            ChanageShootObject("QuadrupleBasic");
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            ChanageShootObject("Cross");
+        }
     }
     public void TakeDamage(float damage)
     {
+        StartCoroutine(CameraPos.Instance.Shake());
+        
 
-        if(hitEffects.Count == 0)
+        if (hitEffects.Count == 0)
         {
             HitEffect spawnHitEffect = Instantiate(hitEffectPrefab, transform.position, transform.rotation);
             hitEffects.Add(spawnHitEffect);

@@ -11,7 +11,7 @@ public class ShootObject : MonoBehaviour
     protected List<Bullet> bullets = new List<Bullet>();
     public float shootMaxTimer;
     public float shootTimer;
-    protected Animator animator;
+    public Animator animator;
 
     public bool enemy;
 
@@ -21,7 +21,6 @@ public class ShootObject : MonoBehaviour
 
     public void Start()
     {
-        animator = GetComponent<Animator>();
         shootTimer = shootMaxTimer;
         ShootSpeedSetting();
     }
