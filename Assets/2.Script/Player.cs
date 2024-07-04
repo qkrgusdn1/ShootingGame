@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,7 +22,6 @@ public class Player : MonoBehaviour
     public float maxHp;
     public float hp;
     public float atkDamage;
-    float pulsDamage;
     float pulsMaxExp;
     public const float SPEED = 1.5f;
     public float maxExp;
@@ -119,15 +119,20 @@ public class Player : MonoBehaviour
             expBar.fillAmount = exp / maxExp;
             expBarText.text = exp + "/" + maxExp;
 
+            maxHp = maxHp * 1.1f;
+            hp = maxHp;
+            hpBar.fillAmount = hp / maxHp;
+            hpBarText.text = hp + "/" + maxHp;
+
             level++;
             levelText.text = "Lv - " + level;
-            pulsDamage++;
-            atkDamage += pulsDamage;
+            
+            atkDamage = atkDamage * 1.1f;
             for (int i = 0; i < shootObjects.Length; i++)
             {
                 shootObjects[i].DamageSetting();
             }
-            damageText.text = "Damage : " + atkDamage;
+            damageText.text = "Damage : " + currentShootObject.bulletDamage;
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))

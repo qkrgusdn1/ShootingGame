@@ -12,6 +12,7 @@ public class ShootObject : MonoBehaviour
     public float shootMaxTimer;
     public float shootTimer;
     public Animator animator;
+    public float powerUpDamage;
 
     public bool enemy;
 
@@ -29,7 +30,7 @@ public class ShootObject : MonoBehaviour
     {
         Player player = GetComponentInParent<Player>();
         if (player != null)
-            bulletDamage = player.atkDamage;
+            bulletDamage = player.atkDamage * powerUpDamage;
     }
 
     public virtual void ShootSpeedSetting()

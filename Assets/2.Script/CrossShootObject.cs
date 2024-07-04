@@ -40,6 +40,6 @@ public class CrossShootObject : ShootObject
     {
         Player player = GetComponentInParent<Player>();
         if (player != null)
-            bulletDamage = player.atkDamage * 2;
+            bulletDamage = player.atkDamage * 2 * powerUpDamage;
     }
 }
