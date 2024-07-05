@@ -11,12 +11,24 @@ public class Item : MonoBehaviour
     public float range;
     Collider[] playerInRange;
 
+    public ShootObjectType shootObjectType;
+
     public TMP_Text text;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            if(shootObjectType == ShootObjectType.Basic)
+            {
+                Player.Instance.ChanageShootObject("Basic");
+            }else if(shootObjectType == ShootObjectType.QuadrupleBasic)
+            {
+                Player.Instance.ChanageShootObject("QuadrupleBasic");
+            }else if(shootObjectType == ShootObjectType.Cross)
+            {
+                Player.Instance.ChanageShootObject("Cross");
+            }
             gameObject.SetActive(false);
         }
     }

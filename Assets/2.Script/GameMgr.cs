@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UI;
 
 public class GameMgr : MonoBehaviour
 {
@@ -28,6 +29,13 @@ public class GameMgr : MonoBehaviour
     [Header("UI")]
     public TMP_Text scoreText;
     public TMP_Text bestScoreText;
+    public float skillTimer;
+    public float maxSkillTimer;
+    public TMP_Text skillTimerText;
+    public Image skillTimerImage;
+
+    [Header("Pooling")]
+    public List<Item> items = new List<Item>();
 
     private void Start()
     {
@@ -35,7 +43,30 @@ public class GameMgr : MonoBehaviour
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
         bestScoreText.text = "BestScore : " + bestScore;
         scoreText.text = "Score : " + score;
+        StartCoroutine(CoUpdate());
     }
+
+
+    public IEnumerator CoUpdate()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.2f);
+            if (skillTimer < maxSkillTimer)
+            {
+                skillTimer += 0.1f;
+                skillTimerImage.fillAmount = skillTimer / maxSkillTimer;
+                skillTimerText.text = skillTimer.ToString("F0");
+            }
+            else if (skillTimer == maxSkillTimer)
+            {
+                break;
+            }
+        }
+
+    }
+
+
 
     public void AddScore(int addScore)
     {

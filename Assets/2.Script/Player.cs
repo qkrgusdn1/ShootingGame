@@ -15,9 +15,6 @@ public class Player : MonoBehaviour
     }
     #endregion
 
-    ShootObject[] shootObjects;
-    ShootObject currentShootObject;
-
     [Header("Settings")]
     public float maxHp;
     public float hp;
@@ -28,10 +25,14 @@ public class Player : MonoBehaviour
     public float exp;
     public int level;
     public float shootSpeed;
-
+    ShootObject[] shootObjects;
+    ShootObject currentShootObject;
     [Header("Hit Effects")]
     public HitEffect hitEffectPrefab;
     List<HitEffect> hitEffects = new List<HitEffect>();
+    int currentPlayerIndex;
+    GameObject currentPlayerBody;
+    public GameObject[] playerBodys;
 
     [Header("UI")]
     public Image hpBar;
@@ -50,13 +51,13 @@ public class Player : MonoBehaviour
         Equip(ShootObjectType.Basic);
     }
 
-
+   
 
     void Start()
     {
         levelText.text = "Lv - " + level;
 
-
+        currentPlayerBody = playerBodys[currentPlayerIndex];
 
         hp = maxHp;
 
@@ -104,6 +105,11 @@ public class Player : MonoBehaviour
             Shoot();
         }
 
+        if (Input.GetKey(KeyCode.Q))
+        {
+            Shoot();
+        }
+
         if (exp >= maxExp)
         {
             pulsMaxExp += 10 * level;
@@ -118,7 +124,10 @@ public class Player : MonoBehaviour
             maxExp += pulsMaxExp;
             expBar.fillAmount = exp / maxExp;
             expBarText.text = exp + "/" + maxExp;
-
+            currentPlayerBody.gameObject.SetActive(false);
+            currentPlayerIndex++;
+            currentPlayerBody = playerBodys[currentPlayerIndex];
+            currentPlayerBody.gameObject.SetActive(true);
             maxHp = maxHp * 1.1f;
             hp = maxHp;
             hpBar.fillAmount = hp / maxHp;

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class Enemy : MonoBehaviour
 {
@@ -16,6 +18,8 @@ public class Enemy : MonoBehaviour
     public float shootLoad;
     [SerializeField] bool canShoot;
     ShootObject shootObject;
+    public Item item;
+    public ShootObjectType itemType;
 
     [Header("Hit Effects")]
     public HitEffect hitEffectPrefab;
@@ -48,6 +52,32 @@ public class Enemy : MonoBehaviour
             Player.Instance.expBar.fillAmount = Player.Instance.exp / Player.Instance.maxExp;
             Player.Instance.expBarText.text = Player.Instance.exp + "/" + Player.Instance.maxExp;
             GameMgr.Instance.AddScore(scoreAmount);
+            if (GameMgr.Instance.items.Count == 0)
+            {
+                Debug.Log("enemyItem");
+                Item enemyItem = Instantiate(item, transform.position, Quaternion.identity);
+                GameMgr.Instance.items.Add(enemyItem);
+            }
+            else
+            {
+                for (int i = 0; i < GameMgr.Instance.items.Count; i++)
+                {
+
+                    if (!GameMgr.Instance.items[i].gameObject.activeSelf && GameMgr.Instance.items[i].shootObjectType == item.shootObjectType)
+                    {
+                        GameMgr.Instance.items[i].gameObject.SetActive(true);
+
+                    }
+                    else if (GameMgr.Instance.items[i].gameObject.activeSelf && GameMgr.Instance.items[i].shootObjectType == item.shootObjectType)
+                    {
+                        Item enemyItem = Instantiate(item, transform.position, Quaternion.identity);
+                        GameMgr.Instance.items.Add(enemyItem);
+                    }
+                }
+            }
+    
+
+
             Destroy(gameObject);
         }
         if (viewPoint.x > 0 && viewPoint.x < 1 && viewPoint.y > 0 && viewPoint.y < 1)

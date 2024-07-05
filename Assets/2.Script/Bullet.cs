@@ -40,14 +40,9 @@ public class Bullet : MonoBehaviour
         {
             if (other.CompareTag("Player"))
             {
-                Player player = other.GetComponent<Player>();
-                if (player != null)
-                {
-                    player.TakeDamage(damage);
-                    gameObject.SetActive(false);
-                }
+                Player.Instance.TakeDamage(damage);
+                gameObject.SetActive(false);
                 Debug.Log("Player");
-                
             }
         }
        
