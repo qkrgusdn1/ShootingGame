@@ -18,12 +18,16 @@ public class Enemy : MonoBehaviour
     public float shootLoad;
     [SerializeField] bool canShoot;
     ShootObject shootObject;
-    public Item item;
     public ShootObjectType itemType;
+    public float itemSpawnProbability;
+    public bool spawnShootObjectEnemy;
+
+    [Header("Item")]
+    public ShootObjectItem shootObjectItem;
+    public Item[] items;
 
     [Header("Hit Effects")]
     public HitEffect hitEffectPrefab;
-    List<HitEffect> hitEffects = new List<HitEffect>();
 
     [Header("Root")]
     public GameObject root;
@@ -52,30 +56,63 @@ public class Enemy : MonoBehaviour
             Player.Instance.expBar.fillAmount = Player.Instance.exp / Player.Instance.maxExp;
             Player.Instance.expBarText.text = Player.Instance.exp + "/" + Player.Instance.maxExp;
             GameMgr.Instance.AddScore(scoreAmount);
-            if (GameMgr.Instance.items.Count == 0)
+            if (Random.Range(0, 100) < itemSpawnProbability)
             {
-                Debug.Log("enemyItem");
-                Item enemyItem = Instantiate(item, transform.position, Quaternion.identity);
-                GameMgr.Instance.items.Add(enemyItem);
-            }
-            else
-            {
-                for (int i = 0; i < GameMgr.Instance.items.Count; i++)
+                Quaternion spawnRotation = Quaternion.Euler(90, 0, 0);
+                if (GameMgr.Instance.items.Count == 0)
                 {
-
-                    if (!GameMgr.Instance.items[i].gameObject.activeSelf && GameMgr.Instance.items[i].shootObjectType == item.shootObjectType)
+                    Item enemyItem = Instantiate(items[Random.Range(0, 3)], transform.position, spawnRotation);
+                    GameMgr.Instance.items.Add(enemyItem);
+                }
+                else
+                {
+                    bool foundItem = false;
+                    for (int i = 0; i < GameMgr.Instance.items.Count; i++)
                     {
-                        GameMgr.Instance.items[i].gameObject.SetActive(true);
-
+                        if (!GameMgr.Instance.items[i].gameObject.activeSelf && GameMgr.Instance.items[i].itemType == items[Random.Range(0, 3)].itemType)
+                        {
+                            GameMgr.Instance.items[i].gameObject.SetActive(true);
+                            GameMgr.Instance.items[i].transform.position = transform.position;
+                            foundItem = true;
+                            break;
+                        }
                     }
-                    else if (GameMgr.Instance.items[i].gameObject.activeSelf && GameMgr.Instance.items[i].shootObjectType == item.shootObjectType)
+                    if (!foundItem)
                     {
-                        Item enemyItem = Instantiate(item, transform.position, Quaternion.identity);
+                        Item enemyItem = Instantiate(items[Random.Range(0, 3)], transform.position, spawnRotation);
                         GameMgr.Instance.items.Add(enemyItem);
                     }
                 }
             }
-    
+            if (spawnShootObjectEnemy)
+            {
+                if (GameMgr.Instance.shootObjectItems.Count == 0)
+                {
+                    ShootObjectItem enemyItem = Instantiate(shootObjectItem, transform.position, Quaternion.identity);
+                    GameMgr.Instance.shootObjectItems.Add(enemyItem);
+                }
+                else
+                {
+                    bool foundItem = false;
+                    for (int i = 0; i < GameMgr.Instance.shootObjectItems.Count; i++)
+                    {
+                        if (!GameMgr.Instance.shootObjectItems[i].gameObject.activeSelf && GameMgr.Instance.shootObjectItems[i].shootObjectType == shootObjectItem.shootObjectType)
+                        {
+                            GameMgr.Instance.shootObjectItems[i].gameObject.SetActive(true);
+                            GameMgr.Instance.shootObjectItems[i].transform.position = transform.position;
+                            foundItem = true;
+                            break;
+                        }
+                    }
+                    if (!foundItem)
+                    {
+                        ShootObjectItem enemyItem = Instantiate(shootObjectItem, transform.position, Quaternion.identity);
+                        GameMgr.Instance.shootObjectItems.Add(enemyItem);
+                    }
+                }
+            }
+
+
 
 
             Destroy(gameObject);
@@ -120,14 +157,14 @@ public class Enemy : MonoBehaviour
     {
         if (canShoot)
         {
-            if (hitEffects.Count == 0)
+            if (GameMgr.Instance.hitEffects.Count == 0)
             {
-                HitEffect spawnHitEffect = Instantiate(hitEffectPrefab, root.transform.position, root.transform.rotation);
-                hitEffects.Add(spawnHitEffect);
+                HitEffect spawnHitEffect = Instantiate(hitEffectPrefab, root.transform.position, root.transform.rotation, GameMgr.Instance.saveEffectObj.transform);
+                GameMgr.Instance.hitEffects.Add(spawnHitEffect);
             }
             else
             {
-                HitEffect disableHitEffect = hitEffects.Find(b => !b.gameObject.activeSelf);
+                HitEffect disableHitEffect = GameMgr.Instance.hitEffects.Find(b => !b.gameObject.activeSelf);
 
                 if (disableHitEffect != null)
                 {
@@ -139,7 +176,7 @@ public class Enemy : MonoBehaviour
                 else
                 {
                     HitEffect spawnHitEffect = Instantiate(hitEffectPrefab, root.transform.position, root.transform.rotation, GameMgr.Instance.saveEffectObj.transform);
-                    hitEffects.Add(spawnHitEffect);
+                    GameMgr.Instance.hitEffects.Add(spawnHitEffect);
                 }
             }
             hp -= damage;

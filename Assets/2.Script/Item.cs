@@ -1,60 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class Item : MonoBehaviour
 {
-    public LayerMask PlayerLayer;
-    public float range;
-    Collider[] playerInRange;
-
-    public ShootObjectType shootObjectType;
-
-    public TMP_Text text;
+    public ItemType itemType;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            if(shootObjectType == ShootObjectType.Basic)
+            switch (itemType)
             {
-                Player.Instance.ChanageShootObject("Basic");
-            }else if(shootObjectType == ShootObjectType.QuadrupleBasic)
-            {
-                Player.Instance.ChanageShootObject("QuadrupleBasic");
-            }else if(shootObjectType == ShootObjectType.Cross)
-            {
-                Player.Instance.ChanageShootObject("Cross");
+                case ItemType.hp:
+                    Player.Instance.hp = Player.Instance.maxHp;
+                    Player.Instance.hpBar.fillAmount = Player.Instance.hp / Player.Instance.maxHp;
+                    Player.Instance.hpBarText.text = Player.Instance.hp + "/" + Player.Instance.maxHp;
+                    break;
+                case ItemType.invincibility:
+                    Player.Instance.StartInvincibility();
+                    break;
+                case ItemType.bomb:
+                    if(GameMgr.Instance.enemyBullets.Count != 0)
+                    {
+                        for (int i = 0; i < GameMgr.Instance.enemyBullets.Count; i++)
+                        {
+                            GameMgr.Instance.enemyBullets[i].gameObject.SetActive(false);
+                        }
+                    }
+
+                    break;
             }
             gameObject.SetActive(false);
         }
     }
+}
 
-    public virtual void Range()
-    {
-        playerInRange = Physics.OverlapSphere(transform.position, range, PlayerLayer);
-
-        if (playerInRange.Length <= 0)
-        {
-            text.gameObject.SetActive(false);
-        }
-        else
-        {
-            text.gameObject.SetActive(true);
-        }
-    }
-
-    public virtual void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, range);
-    }
-
-    private void Update()
-    {
-        Range();
-    }
+public enum ItemType
+{
+    hp,
+    invincibility,
+    bomb
 }

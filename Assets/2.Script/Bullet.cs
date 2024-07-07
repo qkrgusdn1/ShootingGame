@@ -11,11 +11,16 @@ public class Bullet : MonoBehaviour
 
     [Header("Type")]
     public BulletType bulletType;
+    public EnemyBulletType enemyBulletType;
 
-    
-    private void Start()
+    private void OnEnable()
     {
-        InvokeRepeating("DisableBullet", disableTime, disableTime);
+        Invoke("DisableBullet", disableTime);
+    }
+
+    private void OnDisable()
+    {
+        CancelInvoke("DisableBullet");
     }
     void Update()
     {
@@ -58,4 +63,10 @@ public enum BulletType
 {
     mine,
     enemy
+}
+public enum EnemyBulletType
+{
+    none,
+    gray,
+    pink
 }

@@ -13,8 +13,9 @@ public class ShootObject : MonoBehaviour
     public float shootTimer;
     public Animator animator;
     public float powerUpDamage;
-
     public bool enemy;
+    Bullet disableBullet;
+    public EnemyBulletType enemyBulletType;
 
     [Header("Shoot Points")]
     public List<GameObject> shootPoints = new List<GameObject>();
@@ -50,6 +51,8 @@ public class ShootObject : MonoBehaviour
         shootTimer -= Time.deltaTime;
     }
 
+    
+
     public virtual void Shoot()
     {
         if (!enemy)
@@ -62,20 +65,43 @@ public class ShootObject : MonoBehaviour
         shootTimer = shootMaxTimer;
         foreach (GameObject shootPoint in shootPoints)
         {
-            Bullet disableBullet = bullets.Find(b => !b.gameObject.activeSelf);
+            if (!enemy)
+            {
+                disableBullet = bullets.Find(b => !b.gameObject.activeSelf);
+            }
+            else
+            {
+                for(int i = 0; i < GameMgr.Instance.enemyBullets.Count; i++)
+                {
+                    if (!GameMgr.Instance.enemyBullets[i].gameObject.activeSelf && GameMgr.Instance.enemyBullets[i].enemyBulletType == enemyBulletType)
+                    {
+                        disableBullet = GameMgr.Instance.enemyBullets[i];
+                    }
+                }
+            }
 
-            if (disableBullet != null)
+            
+
+            if (disableBullet != null && disableBullet.enemyBulletType == enemyBulletType)
             {
                 disableBullet.gameObject.SetActive(true);
 
                 disableBullet.transform.position = shootPoint.transform.position;
                 disableBullet.transform.rotation = shootPoint.transform.rotation;
             }
-            else
+            else if(disableBullet == null || disableBullet.gameObject.activeInHierarchy)
             {
                 Bullet newBullet = Instantiate(bulletPrefab, shootPoint.transform.position, shootPoint.transform.rotation, GameMgr.Instance.saveBulletObj.transform);
                 newBullet.damage = bulletDamage;
-                bullets.Add(newBullet);
+                if (enemy)
+                {
+                    GameMgr.Instance.enemyBullets.Add(newBullet);
+                }
+                else
+                {
+                    bullets.Add(newBullet);
+                }
+               
             }
         }
     }
@@ -86,6 +112,6 @@ public class ShootObject : MonoBehaviour
 public enum ShootObjectType
 {
     Basic,
-    QuadrupleBasic,
+    Quadruple,
     Cross
 }

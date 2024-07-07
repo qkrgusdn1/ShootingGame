@@ -71,6 +71,7 @@ MonoBehaviour:
   damage: 1
   disableTime: 5
   bulletType: 1
+  enemyBulletType: 1
 --- !u!1 &8044867872987042718
 GameObject:
   m_ObjectHideFlags: 0

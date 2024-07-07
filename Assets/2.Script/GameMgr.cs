@@ -25,6 +25,9 @@ public class GameMgr : MonoBehaviour
     [Header("Setting")]
     public int bestScore;
     public int score;
+    bool isSkillUpdating;
+    public List<HitEffect> hitEffects = new List<HitEffect>();
+    public List<Bullet> enemyBullets = new List<Bullet>();
 
     [Header("UI")]
     public TMP_Text scoreText;
@@ -33,37 +36,47 @@ public class GameMgr : MonoBehaviour
     public float maxSkillTimer;
     public TMP_Text skillTimerText;
     public Image skillTimerImage;
+    public Image[] skillPowerCounts;
+    
 
     [Header("Pooling")]
     public List<Item> items = new List<Item>();
-
+    public List<ShootObjectItem> shootObjectItems = new List<ShootObjectItem>();
     private void Start()
     {
         PlayerPrefs.DeleteAll();
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
         bestScoreText.text = "BestScore : " + bestScore;
         scoreText.text = "Score : " + score;
-        StartCoroutine(CoUpdate());
+        StartCoroutine(CoSkillUpdate());
     }
 
 
-    public IEnumerator CoUpdate()
+    public IEnumerator CoSkillUpdate()
     {
+        if (isSkillUpdating) 
+            yield break; 
+        isSkillUpdating = true;
+        skillTimerText.gameObject.SetActive(true);
         while (true)
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.15f);
             if (skillTimer < maxSkillTimer)
             {
-                skillTimer += 0.1f;
+                skillTimer += 0.3f;
                 skillTimerImage.fillAmount = skillTimer / maxSkillTimer;
                 skillTimerText.text = skillTimer.ToString("F0");
             }
-            else if (skillTimer == maxSkillTimer)
+            else
             {
+                skillTimerText.gameObject.SetActive(false);
+                skillTimer = maxSkillTimer;
+                skillTimerImage.fillAmount = skillTimer / maxSkillTimer;
                 break;
             }
         }
-
+       
+        isSkillUpdating = false;
     }
 
 

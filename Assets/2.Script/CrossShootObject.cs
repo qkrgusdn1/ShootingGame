@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class CrossShootObject : ShootObject
 {
+    public override void ShootSpeedSetting()
+    {
+        Player player = GetComponentInParent<Player>();
+        if (player != null)
+            shootMaxTimer = player.shootSpeed * 0.5f;
+    }
+
     public override void Shoot()
     {
         if (!enemy)

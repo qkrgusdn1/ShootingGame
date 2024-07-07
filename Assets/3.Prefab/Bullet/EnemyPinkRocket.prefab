@@ -92,8 +92,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4361403565244707425}
-  - component: {fileID: 425977807944355498}
   - component: {fileID: 4485212475783043623}
+  - component: {fileID: 4490668958921386350}
   m_Layer: 0
   m_Name: EnemyPinkRocket
   m_TagString: Untagged
@@ -117,7 +117,24 @@ Transform:
   - {fileID: 6237696010329581179}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &425977807944355498
+--- !u!114 &4485212475783043623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7004804788120037127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9208e0714cd52c47bf4d788c19e7c94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2
+  damage: 1
+  disableTime: 5
+  bulletType: 1
+  enemyBulletType: 2
+--- !u!65 &4490668958921386350
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -136,21 +153,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.3646142, y: 2.479744, z: 5.5477815}
-  m_Center: {x: 0, y: 0, z: 0.2875054}
---- !u!114 &4485212475783043623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7004804788120037127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9208e0714cd52c47bf4d788c19e7c94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  damage: 1
-  disableTime: 5
-  bulletType: 1
+  m_Size: {x: 2.3646142, y: 2.479744, z: 5.550073}
+  m_Center: {x: 0, y: 0, z: 0.3184219}
