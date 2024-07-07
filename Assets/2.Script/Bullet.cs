@@ -15,6 +15,7 @@ public class Bullet : MonoBehaviour
 
     private void OnEnable()
     {
+        CancelInvoke("DisableBullet");
         Invoke("DisableBullet", disableTime);
     }
 

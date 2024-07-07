@@ -65,6 +65,7 @@ public class ShootObject : MonoBehaviour
         shootTimer = shootMaxTimer;
         foreach (GameObject shootPoint in shootPoints)
         {
+            disableBullet = null;
             if (!enemy)
             {
                 disableBullet = bullets.Find(b => !b.gameObject.activeSelf);
@@ -89,7 +90,7 @@ public class ShootObject : MonoBehaviour
                 disableBullet.transform.position = shootPoint.transform.position;
                 disableBullet.transform.rotation = shootPoint.transform.rotation;
             }
-            else if(disableBullet == null || disableBullet.gameObject.activeInHierarchy)
+            else if(disableBullet == null)
             {
                 Bullet newBullet = Instantiate(bulletPrefab, shootPoint.transform.position, shootPoint.transform.rotation, GameMgr.Instance.saveBulletObj.transform);
                 newBullet.damage = bulletDamage;
