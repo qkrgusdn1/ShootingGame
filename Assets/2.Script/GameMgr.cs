@@ -19,6 +19,7 @@ public class GameMgr : MonoBehaviour
         instance = this;
     }
     [Header("Save")]
+    public GameObject saveEnemyObj;
     public GameObject saveBulletObj;
     public GameObject saveEffectObj;
 
@@ -28,6 +29,9 @@ public class GameMgr : MonoBehaviour
     bool isSkillUpdating;
     public List<HitEffect> hitEffects = new List<HitEffect>();
     public List<Bullet> enemyBullets = new List<Bullet>();
+    Camera mainCamera;
+    public GameObject[] enemySpawnPositions;
+    public List<Enemy> enemies = new List<Enemy>();
 
     [Header("UI")]
     public TMP_Text scoreText;
@@ -37,13 +41,16 @@ public class GameMgr : MonoBehaviour
     public TMP_Text skillTimerText;
     public Image skillTimerImage;
     public Image[] skillPowerCounts;
-    
+    public Transform leftLimitTr;
+    public Transform rightLimitTr;
+
 
     [Header("Pooling")]
     public List<Item> items = new List<Item>();
     public List<ShootObjectItem> shootObjectItems = new List<ShootObjectItem>();
     private void Start()
     {
+        mainCamera = Camera.main;
         PlayerPrefs.DeleteAll();
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
         bestScoreText.text = "BestScore : " + bestScore;
@@ -79,7 +86,19 @@ public class GameMgr : MonoBehaviour
         isSkillUpdating = false;
     }
 
+    public bool CheckInMap(Vector3 pos)
+    {
+        Vector2 leftWorldPos = Camera.main.ScreenToViewportPoint(leftLimitTr.position);
+        Vector2 rightWorldPos = Camera.main.ScreenToViewportPoint(rightLimitTr.position);
 
+        Vector3 viewPoint = mainCamera.WorldToViewportPoint(pos);
+
+        if (viewPoint.x < leftWorldPos.x || viewPoint.x > rightWorldPos.x || viewPoint.y < 0 || viewPoint.y > 1)
+        {
+            return false;
+        }
+        return true;
+    }
 
     public void AddScore(int addScore)
     {

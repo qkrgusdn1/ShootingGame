@@ -15,14 +15,19 @@ public class CameraPos : MonoBehaviour
     {
         instance = this;
     }
-
+    Vector3 originalPos;
     [Header("Shake")]
     public float shakePower;
     public float shakeTime;
 
+    private void Start()
+    {
+        originalPos = transform.localPosition;
+    }
+
     public IEnumerator Shake()
     {
-        Vector3 originalPos = transform.localPosition;
+        
         float elapsed = 0;
 
         while (elapsed < shakeTime)

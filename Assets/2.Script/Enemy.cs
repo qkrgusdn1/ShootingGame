@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     public ShootObjectType itemType;
     public float itemSpawnProbability;
     public bool spawnShootObjectEnemy;
+    public EnemyType enemyType;
 
     [Header("Item")]
     public ShootObjectItem shootObjectItem;
@@ -59,9 +60,10 @@ public class Enemy : MonoBehaviour
             if (Random.Range(0, 100) < itemSpawnProbability)
             {
                 Quaternion spawnRotation = Quaternion.Euler(90, 0, 0);
+                Vector3 spawnPosition = new Vector3(transform.position.x, 9.06f, transform.position.z);
                 if (GameMgr.Instance.items.Count == 0)
                 {
-                    Item enemyItem = Instantiate(items[Random.Range(0, 3)], transform.position, spawnRotation);
+                    Item enemyItem = Instantiate(items[Random.Range(0, 3)], spawnPosition, spawnRotation);
                     GameMgr.Instance.items.Add(enemyItem);
                 }
                 else
@@ -72,14 +74,14 @@ public class Enemy : MonoBehaviour
                         if (!GameMgr.Instance.items[i].gameObject.activeSelf && GameMgr.Instance.items[i].itemType == items[Random.Range(0, 3)].itemType)
                         {
                             GameMgr.Instance.items[i].gameObject.SetActive(true);
-                            GameMgr.Instance.items[i].transform.position = transform.position;
+                            GameMgr.Instance.items[i].transform.position = spawnPosition;
                             foundItem = true;
                             break;
                         }
                     }
                     if (!foundItem)
                     {
-                        Item enemyItem = Instantiate(items[Random.Range(0, 3)], transform.position, spawnRotation);
+                        Item enemyItem = Instantiate(items[Random.Range(0, 3)], spawnPosition, spawnRotation);
                         GameMgr.Instance.items.Add(enemyItem);
                     }
                 }
@@ -117,15 +119,7 @@ public class Enemy : MonoBehaviour
 
             Destroy(gameObject);
         }
-        if (viewPoint.x > 0 && viewPoint.x < 1 && viewPoint.y > 0 && viewPoint.y < 1)
-        {
-            canShoot = true;
-            
-        }
-        else
-        {
-            canShoot = false;
-        }
+        canShoot = GameMgr.Instance.CheckInMap(transform.position);
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
     }
 
@@ -133,7 +127,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("DestoryWall"))
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 
@@ -184,4 +178,11 @@ public class Enemy : MonoBehaviour
         
 
     }
+}
+
+public enum EnemyType
+{
+    PinkFish,
+    Carp,
+    Dolphin
 }

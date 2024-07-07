@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     public float defaultAtkDamage;
     public float damagePowerUp;
     float pulsMaxExp;
-    public const float SPEED = 1.5f;
+    public const float SPEED = 1;
     public float maxExp;
     public float exp;
     public int level;
@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
     List<Bullet> skillBullets = new List<Bullet>();
     public bool invincibility;
     public GameObject invincibilityBarrier;
+    
 
     [Header("Hit Effects")]
     public HitEffect hitEffectPrefab;
@@ -54,6 +55,8 @@ public class Player : MonoBehaviour
     public TMP_Text bodyTypeText;
 
 
+
+
     void Awake()
     {
         instance = this;
@@ -63,9 +66,9 @@ public class Player : MonoBehaviour
 
    
 
-    void Start()
+    void Start() 
     {
-        
+
         levelText.text = "Lv - " + level;
         defaultAtkDamage = atkDamage;
         currentPlayerBody = playerBodys[currentPlayerIndex];
@@ -101,7 +104,7 @@ public class Player : MonoBehaviour
         shootObjectTypeText.text = "Type : " + shootObjectType.ToString();
     }
 
-    public void Update()
+    void Move()
     {
         float hor = Input.GetAxis("Horizontal");
         float ver = Input.GetAxis("Vertical");
@@ -109,6 +112,32 @@ public class Player : MonoBehaviour
         Vector3 move = new Vector3(hor, 0, ver) * Time.deltaTime * SPEED;
         transform.Translate(move);
 
+        Vector2 leftWorldPos = Camera.main.ScreenToViewportPoint(GameMgr.Instance.leftLimitTr.position);
+        Vector2 rightWorldPos = Camera.main.ScreenToViewportPoint(GameMgr.Instance.rightLimitTr.position);
+
+
+        Vector3 viewPoint = Camera.main.WorldToViewportPoint(transform.position);
+
+        viewPoint.x = Mathf.Clamp(viewPoint.x, leftWorldPos.x, rightWorldPos.x);
+        viewPoint.y = Mathf.Clamp(viewPoint.y, 0, 1);
+
+        //ºäÆ÷Æ® ÁÂÇ¥¸¦ ¿ùµå ÁÂÇ¥·Î º¯È¯
+        viewPoint = Camera.main.ViewportToWorldPoint(viewPoint);
+
+        transform.position = new Vector3(viewPoint.x, transform.position.y, viewPoint.z);
+    }
+
+
+    public void Update()
+    {
+
+        
+        float hor = Input.GetAxis("Horizontal");
+        float ver = Input.GetAxis("Vertical");
+
+        Vector3 move = new Vector3(hor, 0, ver) * Time.deltaTime * SPEED;
+        transform.Translate(move);
+        Move();
         currentShootObject.UpdateShoot();
 
         if (Input.GetKey(KeyCode.Space))

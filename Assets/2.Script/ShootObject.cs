@@ -80,9 +80,6 @@ public class ShootObject : MonoBehaviour
                     }
                 }
             }
-
-            
-
             if (disableBullet != null && disableBullet.enemyBulletType == enemyBulletType)
             {
                 disableBullet.gameObject.SetActive(true);
