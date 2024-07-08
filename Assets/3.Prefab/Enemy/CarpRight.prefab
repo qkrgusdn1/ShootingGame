@@ -1953,7 +1953,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   powerUpDamage: 0
   enemy: 1
-  enemyBulletType: 0
+  enemyBulletType: 1
   shootPoints:
   - {fileID: 4414595599004113219}
 --- !u!114 &7095852057445745485
@@ -1980,6 +1980,7 @@ MonoBehaviour:
   itemType: 0
   itemSpawnProbability: 100
   spawnShootObjectEnemy: 0
+  enemyType: 0
   shootObjectItem: {fileID: 0}
   items:
   - {fileID: 2702049725750263685, guid: 90e479db4a2a2254f99d7da1fc694109, type: 3}

@@ -229,10 +229,8 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if (invincibility)
-            return;
+        
 
-        StartCoroutine(CameraPos.Instance.Shake());
         
 
         if (GameMgr.Instance.hitEffects.Count == 0)
@@ -257,6 +255,10 @@ public class Player : MonoBehaviour
                 GameMgr.Instance.hitEffects.Add(spawnHitEffect);
             }
         }
+        if (invincibility)
+            return;
+
+        StartCoroutine(CameraPos.Instance.Shake());
         hp -= damage;
         hpBar.fillAmount = hp / maxHp;
         hpBarText.text = hp + "/" + maxHp;

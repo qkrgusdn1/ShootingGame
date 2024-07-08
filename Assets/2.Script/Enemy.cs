@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour
     public float shootTime;
     public float shootCount;
     public float shootLoad;
-    [SerializeField] bool canShoot;
+    protected bool canShoot;
     ShootObject shootObject;
     public ShootObjectType itemType;
     public float itemSpawnProbability;
@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour
 
 
 
-    private void Update()
+    public virtual void Update()
     {
         Vector3 viewPoint = mainCamera.WorldToViewportPoint(transform.position);
         shootObject.UpdateShoot();

@@ -41,6 +41,15 @@ public class Bullet : MonoBehaviour
                     gameObject.SetActive(false);
                 }
             }
+            else if(other.CompareTag("Boss"))
+            {
+                Boss boss = other.GetComponent<Boss>();
+                if (boss != null)
+                {
+                    boss.TakeDamage(damage);
+                    gameObject.SetActive(false);
+                }
+            }
         }
         else if(bulletType == BulletType.enemy)
         {
@@ -69,5 +78,6 @@ public enum EnemyBulletType
 {
     none,
     gray,
-    pink
+    pink,
+    bossBig
 }

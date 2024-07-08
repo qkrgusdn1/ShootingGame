@@ -825,7 +825,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   powerUpDamage: 0
   enemy: 1
-  enemyBulletType: 0
+  enemyBulletType: 1
   shootPoints:
   - {fileID: 1863235562094228528}
 --- !u!114 &4402847804348172420
