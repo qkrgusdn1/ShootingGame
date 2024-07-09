@@ -14,6 +14,8 @@ public class EnemySpawn : MonoBehaviour
     public float spawnTimer;
     public float crossSpawnTimer;
 
+
+
     public IEnumerator CoSpawn()
     {
         while (true)
@@ -22,6 +24,7 @@ public class EnemySpawn : MonoBehaviour
             {
                 for (int i = 0; i < spawnCount; i++)
                 {
+                    Debug.Log("spawnEnemy");
                     Spawn();
                     yield return new WaitForSeconds(spawnTimer);
                 }
@@ -48,10 +51,13 @@ public class EnemySpawn : MonoBehaviour
 
     void Spawn()
     {
+        Debug.Log("spawnEnemy");
         if (!cross)
         {
+            Debug.Log("spawnEnemy");
             foreach (GameObject position in positions)
             {
+                Debug.Log("spawnEnemy");
                 disableEnemy = null;
                 for (int i = 0; i < GameMgr.Instance.enemies.Count; i++)
                 {
@@ -68,9 +74,10 @@ public class EnemySpawn : MonoBehaviour
                 }
                 else if (disableEnemy == null)
                 {
-                    Enemy newEnemy = Instantiate(enemyPrefabs[0], position.transform.position, position.transform.rotation, GameMgr.Instance.saveEnemyObj.transform);
-                    GameMgr.Instance.enemies.Add(newEnemy);
+                    disableEnemy = Instantiate(enemyPrefabs[0], position.transform.position, position.transform.rotation, GameMgr.Instance.saveEnemyObj.transform);
+                    GameMgr.Instance.enemies.Add(disableEnemy);
                 }
+                disableEnemy.transform.position = EnemySpawnMgr.Instance.GetEnemySpawnRandomPosition();
             }
         }
         else

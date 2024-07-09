@@ -130,13 +130,6 @@ public class Player : MonoBehaviour
 
     public void Update()
     {
-
-        
-        float hor = Input.GetAxis("Horizontal");
-        float ver = Input.GetAxis("Vertical");
-
-        Vector3 move = new Vector3(hor, 0, ver) * Time.deltaTime * SPEED;
-        transform.Translate(move);
         Move();
         currentShootObject.UpdateShoot();
 
