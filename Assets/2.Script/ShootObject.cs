@@ -14,7 +14,7 @@ public class ShootObject : MonoBehaviour
     public Animator animator;
     public float powerUpDamage;
     public bool enemy;
-    Bullet disableBullet;
+    protected Bullet disableBullet;
     public EnemyBulletType enemyBulletType;
 
     [Header("Shoot Points")]

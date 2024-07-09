@@ -63,7 +63,7 @@ public class Enemy : MonoBehaviour
                 Vector3 spawnPosition = new Vector3(transform.position.x, 9.06f, transform.position.z);
                 if (GameMgr.Instance.items.Count == 0)
                 {
-                    Item enemyItem = Instantiate(items[Random.Range(0, 3)], spawnPosition, spawnRotation);
+                    Item enemyItem = Instantiate(items[Random.Range(0, items.Length)], spawnPosition, spawnRotation);
                     GameMgr.Instance.items.Add(enemyItem);
                 }
                 else
@@ -71,7 +71,7 @@ public class Enemy : MonoBehaviour
                     bool foundItem = false;
                     for (int i = 0; i < GameMgr.Instance.items.Count; i++)
                     {
-                        if (!GameMgr.Instance.items[i].gameObject.activeSelf && GameMgr.Instance.items[i].itemType == items[Random.Range(0, 3)].itemType)
+                        if (!GameMgr.Instance.items[i].gameObject.activeSelf && GameMgr.Instance.items[i].itemType == items[Random.Range(0, items.Length)].itemType)
                         {
                             GameMgr.Instance.items[i].gameObject.SetActive(true);
                             GameMgr.Instance.items[i].transform.position = spawnPosition;
@@ -81,7 +81,7 @@ public class Enemy : MonoBehaviour
                     }
                     if (!foundItem)
                     {
-                        Item enemyItem = Instantiate(items[Random.Range(0, 3)], spawnPosition, spawnRotation);
+                        Item enemyItem = Instantiate(items[Random.Range(0, items.Length)], spawnPosition, spawnRotation);
                         GameMgr.Instance.items.Add(enemyItem);
                     }
                 }

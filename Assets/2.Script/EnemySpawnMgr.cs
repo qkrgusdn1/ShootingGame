@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemySpawnMgr : MonoBehaviour
 {
     public List<EnemySpawn> enemySpawns = new List<EnemySpawn>();
+    public float minTime;
+    public float maxTime;
 
     private void Start()
     {
@@ -17,7 +19,7 @@ public class EnemySpawnMgr : MonoBehaviour
         while (true)
         {
             StartCoroutine(enemySpawns[Random.Range(0, enemySpawns.Count)].CoSpawn());
-            yield return new WaitForSeconds(Random.Range(10, 20));
+            yield return new WaitForSeconds(Random.Range(minTime, maxTime));
         }
     }
 }

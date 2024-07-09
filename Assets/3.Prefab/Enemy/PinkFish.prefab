@@ -169,15 +169,15 @@ MonoBehaviour:
   maxHp: 200
   hp: 0
   moveSpeed: 0.3
-  expAmount: 5000
+  expAmount: 30
   scoreAmount: 30
   shootTime: 0.1
   shootCount: 3
   shootLoad: 2
-  canShoot: 0
   itemType: 1
   itemSpawnProbability: 100
   spawnShootObjectEnemy: 0
+  enemyType: 0
   shootObjectItem: {fileID: 0}
   items:
   - {fileID: 2702049725750263685, guid: 90e479db4a2a2254f99d7da1fc694109, type: 3}

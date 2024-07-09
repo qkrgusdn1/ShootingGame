@@ -269,6 +269,7 @@ public class Player : MonoBehaviour
         if (skillBullets.Count == 0)
         {
             Bullet bullet = Instantiate(skillBulletPrefab, transform.position, Quaternion.identity);
+            bullet.damage = atkDamage * 20;
             skillBullets.Add(bullet);
         }
         else
@@ -280,6 +281,7 @@ public class Player : MonoBehaviour
                 {
                     skillBullets[i].gameObject.SetActive(true);
                     skillBullets[i].transform.position = transform.position;
+                    skillBullets[i].damage = atkDamage * 20;
                     foundSkillBullet = true;
                     break;
                 }
@@ -287,6 +289,7 @@ public class Player : MonoBehaviour
             if (!foundSkillBullet)
             {
                 Bullet bullet = Instantiate(skillBulletPrefab, transform.position, Quaternion.identity);
+                bullet.damage = atkDamage * 20;
                 skillBullets.Add(bullet);
             }
         }

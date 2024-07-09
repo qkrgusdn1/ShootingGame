@@ -848,7 +848,6 @@ MonoBehaviour:
   shootTime: 0.1
   shootCount: 1
   shootLoad: 3
-  canShoot: 0
   itemType: 0
   itemSpawnProbability: 100
   spawnShootObjectEnemy: 0
@@ -857,7 +856,6 @@ MonoBehaviour:
   items:
   - {fileID: 2702049725750263685, guid: 90e479db4a2a2254f99d7da1fc694109, type: 3}
   - {fileID: 7909014936022208660, guid: 7d192dc3e91f71347abb599310403fd2, type: 3}
-  - {fileID: 3842186244824946951, guid: 2b72b93483a250b4ca90aa8b7cfe1f6d, type: 3}
   hitEffectPrefab: {fileID: 3924509917668383413, guid: 291d37db1923e084693f399b198e312a,
     type: 3}
   root: {fileID: 1375413747070523230}
