@@ -35,7 +35,8 @@ public class Player : MonoBehaviour
     List<Bullet> skillBullets = new List<Bullet>();
     public bool invincibility;
     public GameObject invincibilityBarrier;
-    
+    public List<GameObject> shootObjectObjs;
+
 
     [Header("Hit Effects")]
     public HitEffect hitEffectPrefab;
@@ -99,6 +100,35 @@ public class Player : MonoBehaviour
                 damageText.text = "Damage : " + currentShootObject.bulletDamage;
                 currentShootObject.gameObject.SetActive(true);
                 currentShootObject.Equiped();
+                if (shootObjects[i].type == ShootObjectType.Basic)
+                {
+                    shootObjectObjs[0].SetActive(true);
+                    for (int j = 1; j < shootObjectObjs.Count; j++)
+                    {
+                        shootObjectObjs[j].SetActive(false);
+                    }
+                }else if(shootObjects[i].type == ShootObjectType.Quadruple)
+                {
+                    shootObjectObjs[1].SetActive(true);
+                    for (int j = 0; j < shootObjectObjs.Count; j++)
+                    {
+                        if (j != 1)
+                        {
+                            shootObjectObjs[j].SetActive(false);
+                        }
+                    }
+                }
+                else if (shootObjects[i].type == ShootObjectType.Cross)
+                {
+                    shootObjectObjs[2].SetActive(true);
+                    for (int j = 0; j < shootObjectObjs.Count; j++)
+                    {
+                        if (j != 2)
+                        {
+                            shootObjectObjs[j].SetActive(false);
+                        }
+                    }
+                }
             }
         }
         shootObjectTypeText.text = "Type : " + shootObjectType.ToString();
